@@ -15,7 +15,6 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
-
 class CourseProperty(models.Model):
     description  = models.CharField(max_length = 100 , null = False)
     course = models.ForeignKey(Course , null = False , on_delete=models.CASCADE)

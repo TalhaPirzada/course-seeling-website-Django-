@@ -1,83 +1,434 @@
-<!doctype html>
+<!DOCTYPE html>
 {% load static %}
 <html lang="en">
-  <head>
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>
-        {%block title%}
-    {% endblock %}
+        {% block title %}
+        {% endblock %}
     </title>
-    
-    
+
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
     <link rel="stylesheet" href="{% static 'courses/css/common.css'%}">
-    {% block css %} 
-    {% endblock %} <title>Hello, world!</title>
-  </head>
-  <body>
-       
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-         
-
-            <!-- right -->
-
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                </li>
-                
-              </ul>
-
-            <!-- left -->
-            <ul class="navbar-nav ml-auto">
-              
-              {% if request.user.is_authenticated %}
-
-              <li class="nav-item">
-                <a class="nav-link" href="/my-courses">My Courses</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/logout">Logout</a>
-              </li>
-
-              {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/signup">Signup</a>
-            </li>
-
-            {% endif %}
-            
-          </ul>
-        </div>
-      </nav>
-
-
-    {% block content %}
-
+    
+    {% block css %}
     {% endblock %}
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<style>
+      @import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@600&display=swap');
+    *{
+      font-family: 'Martel Sans', sans-serif;
+    }
+    .navbar {
+        position: relative;
+        background-color: #000000; /* Change navbar background color */
+        height: 80px;
+        margin: 10px;
+        border-radius: 16px;
+        padding: 0.5rem;
+        z-index: 1000;
+    }
+
+    .navbar-brand {
+        font-weight: 500;
+        color: white; /* Change navbar brand text color */
+        font-size: 24px;
+        transition: 0.3s color;
+    }
+
+    .navbar-brand,
+    .nav-link {
+        color: #5EBEC4; /* Change navbar link text color */
+    }
+
+    .navbar-toggler {
+        border: none;
+        font-size: 1.25rem;
+        color: #5EBEC4;
+    }
+
+    .navbar-toggler:focus,
+    btn-close:focus {
+        box-shadow: none;
+        outline: none;
+    }
+
+    .nav-link {
+        color: #5EBEC4;
+        font-weight: 500;
+        position: relative;
+        text-decoration: none !important; /* Remove underline */
+    }
+
+    .nav-link:hover,
+    .nav-link.active a {
+        color: white; /* Change navbar link hover color */
+    }
+
+    .nav-link::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background-color: white;
+        visibility: hidden;
+        transition: 0.3s ease-in-out;
+    }
+
+    .nav-link:hover:before,
+    .nav-link.active::before {
+        width: 100%;
+        visibility: visible;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 0.8rem 1.5rem;
+        background-color:#5EBEC4 !important;
+        color: #fff;
+        
+        text-decoration: none;
+        border-radius: 2px;
+        transition: background-color 0.3s; /* Add transition effect */
+    }
+
+    .btn:hover {
+       color: white !important;
+       /* border: none !important; Change button hover color */
+    }
+
+    .navbar-nav {
+        margin-left: auto; /* Move the signup button to the right */
+    }
+
+    .navbar-nav .nav-item {
+        margin-left: 15px; /* Add spacing between navigation items */
+    }
+
+    .navbar-nav .nav-item:last-child {
+        margin-right: 20px; /* Add right margin to the last navigation item */
+    }
+
+    /* Custom CSS for small screens */
+    @media (max-width: 767.98px) {
+        .navbar {
+            margin-bottom: 20px; /* Add margin to push carousel down */
+        }
+    }
+
+    @media (max-width: 767.98px) {
+    .nav-link.btn {
+        display: inline-block;
+        padding: 0.5rem 1rem; /* Adjust padding for smaller screens */
+        background-color: #5EBEC4 !important;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 2px;
+        margin: 5px; /* Add margin to separate buttons */
+    }
+}
+.site-footer
+        {
+          background-color:#26272b;
+          padding:45px 0 20px;
+          font-size:15px;
+          line-height:24px;
+          color:#737373;
+        }
+        .site-footer hr
+        {
+          border-top-color:#bbb;
+          opacity:0.5
+        }
+        .site-footer hr.small
+        {
+          margin:20px 0
+        }
+        .site-footer h6
+        {
+          color:#fff;
+          font-size:16px;
+          text-transform:uppercase;
+          margin-top:5px;
+          letter-spacing:2px
+        }
+        .site-footer a
+        {
+          color:#737373;
+        }
+        .site-footer a:hover
+        {
+          color:#3366cc;
+          text-decoration:none;
+        }
+        .footer-links
+        {
+          padding-left:0;
+          list-style:none
+        }
+        .footer-links li
+        {
+          display:block
+        }
+        .footer-links a
+        {
+          color:#737373
+        }
+        .footer-links a:active,.footer-links a:focus,.footer-links a:hover
+        {
+          color:#3366cc;
+          text-decoration:none;
+        }
+        .footer-links.inline li
+        {
+          display:inline-block
+        }
+        .site-footer .social-icons
+        {
+          text-align:right
+        }
+        .site-footer .social-icons a
+        {
+          width:40px;
+          height:40px;
+          line-height:40px;
+          margin-left:6px;
+          margin-right:0;
+          border-radius:100%;
+          background-color:#33353d
+        }
+        .copyright-text
+        {
+          margin:0
+        }
+        @media (max-width:991px)
+        {
+          .site-footer [class^=col-]
+          {
+            margin-bottom:30px
+          }
+        }
+        @media (max-width:767px)
+        {
+          .site-footer
+          {
+            padding-bottom:0
+          }
+          .site-footer .copyright-text,.site-footer .social-icons
+          {
+            text-align:center
+          }
+        }
+        .social-icons
+        {
+          padding-left:0;
+          margin-bottom:0;
+          list-style:none
+        }
+        .social-icons li
+        {
+          display:inline-block;
+          margin-bottom:4px
+        }
+        .social-icons li.title
+        {
+          margin-right:15px;
+          text-transform:uppercase;
+          color:#96a2b2;
+          font-weight:700;
+          font-size:13px
+        }
+        .social-icons a{
+          background-color:#eceeef;
+          color:#818a91;
+          font-size:16px;
+          display:inline-block;
+          line-height:44px;
+          width:44px;
+          height:44px;
+          text-align:center;
+          margin-right:8px;
+          border-radius:100%;
+          -webkit-transition:all .2s linear;
+          -o-transition:all .2s linear;
+          transition:all .2s linear
+        }
+        .social-icons a:active,.social-icons a:focus,.social-icons a:hover
+        {
+          color:#fff;
+          background-color:#29aafe
+        }
+        .social-icons.size-sm a
+        {
+          line-height:34px;
+          height:34px;
+          width:34px;
+          font-size:14px
+        }
+        .social-icons a.facebook:hover
+        {
+          background-color:#3b5998
+        }
+        .social-icons a.twitter:hover
+        {
+          background-color:#00aced
+        }
+        .social-icons a.linkedin:hover
+        {
+          background-color:#007bb6;
+          text-decoration:underline;
+        }
+        .social-icons a.dribbble:hover
+        {
+          background-color:#ea4c89
+        }
+        @media (max-width:767px)
+        {
+          .social-icons li.title
+          {
+            display:block;
+            margin-right:0;
+            font-weight:600
+          }
+        }
+        body{
+            background-image: url('https://image.freepik.com/free-vector/white-abstract-background-theme_23-2148830884.jpg'); /* Replace 'path_to_your_image.jpg' with the actual path to your image */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+        }
+        input:hover{
+            border:3px solid black;
+        }
+
+</style>
+<body>
+
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg  ">
+        <a class="navbar-brand" href="/"><img src="{% static 'logo1.png' %}" alt="" style="width: 5rem;"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+                aria-expanded="false" aria-label="Toggle navigation" style="background-color: white;">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarText" style="background-color: black;">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About Us</a>
+                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav ml-auto">
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                      <a class="nav-link btn rounded-pill" style="text-decoration: none !important;" href="/my-courses">My Courses</a>
+                        <!-- <a class="nav-link" href="/my-courses">My Courses</a> -->
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link btn rounded-pill" style="text-decoration: none !important;" href="/logout">Logout</a>
+                       
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link btn  rounded-pill" style="text-decoration: none !important;" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn  rounded-pill" style="text-decoration: none !important;" href="/signup">Signup</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</div>
+
+{% block content %}
+
+{% endblock %}
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+         <!-- Site footer -->
+      <footer class="site-footer">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <h6>About</h6>
+              <p class="text-justify">Coursehub.com <i>LEARNING IS FUN </i> Embark on a journey to the stars from the comfort of your home with our cutting-edge online learning platform. Dive into the fascinating world of space exploration and discover the wonders of the cosmos like never before..</p>
+            </div>
   
-      
+            <div class="col-xs-6 col-md-3">
+              <h6>Categories</h6>
+              <ul class="footer-links">
+                <li><a href="http://coursehub.com/category/c-language/">C</a></li>
+                <li><a href="http://coursehub.com/category/front-end-development/">Design</a></li>
+                <li><a href="http://coursehub.com/category/back-end-development/">PHP</a></li>
+                <li><a href="http://coursehub.com/category/java-programming-language/">Java</a></li>
+                <li><a href="http://coursehub.com/category/android/">Android</a></li>
+                <li><a href="http://coursehub.com/category/templates/">Templates</a></li>
+              </ul>
+            </div>
+  
+            <div class="col-xs-6 col-md-3">
+              <h6>Quick Links</h6>
+              <ul class="footer-links">
+                <li><a href="http://coursehub.com/about/">About Us</a></li>
+                <li><a href="http://coursehub.com/contact/">Contact Us</a></li>
+                <li><a href="http://coursehub.com/contribute-at-scanfcode/">Read More</a></li>
+                <li><a href="http://coursehub.com/privacy-policy/">Privacy Policy</a></li>
+              </ul>
+            </div>
+          </div>
+          <hr>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 col-sm-6 col-xs-12">
+              <p class="copyright-text">Copyright &copy; 2017 All Rights Reserved by 
+           <a href="#">Coursehub</a>.
+              </p>
+            </div>
+  
+            <div class="col-md-4 col-sm-6 col-xs-12">
+              <ul class="social-icons">
+                <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a></li>
+                <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>   
+              </ul>
+            </div>
+          </div>
+        </div>
+  </footer>
+
+
 {% block js %}
 {% endblock %}
-  
-  </body>
+
+</body>
 </html>
-
-

@@ -1,0 +1,87 @@
+{% extends 'courses/base.html' %}
+{% load course_custom_tags %}
+{%block title%}
+Signup
+{% endblock %}
+
+{%block content%}
+<html>
+    <head>
+        <title>Blog</title>
+        <meta name="viewport" content="width:device-width,initial-scale:1.0">
+        <link rel="stylesheet" href="bootstrap.css" type="text/css">
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+<style>
+    body{
+        background-image: url('https://wallpapercave.com/wp/wp9764031.jpg'); /* Replace 'path_to_your_image.jpg' with the actual path to your image */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    }
+    
+</style>
+    </head>
+    <body>
+        <h1 style="text-align: center;font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;color:white" class="mt-5">BLOGS</h1>
+        <div class="container my-5" id="d1">
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="#ac1" class="card-link" data-toggle="collapse">Django-Framework</a>
+                        </div>
+                        <div id="ac1" data-parent="#d1" class="collapse">
+                            <div class="card-body">
+                            
+Django is a high-level Python web framework renowned for its efficiency, simplicity, and versatility in building robust web applications. With Django, developers can focus on writing clean, reusable code while leveraging a wealth of built-in features and libraries for rapid development. Its powerful ORM (Object-Relational Mapping) simplifies database operations, ensuring secure and scalable data management. 
+
+Django's built-in admin interface streamlines content management tasks, making it easy to create and modify application content. Moreover, Django follows the DRY (Don't Repeat Yourself) principle, reducing redundancy and promoting code maintainability. Whether you're developing a simple blog or a complex enterprise-level application, Django provides the tools and structure to turn your ideas into fully functional, dynamic web solutions efficiently.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="#ac2" class="card-link" data-toggle="collapse">
+                                The Art and Science of CSS: Crafting Stunning Web Designs</a>
+                        </div>
+                        <div id="ac2" data-parent="#d1" class="collapse">
+                            <div class="card-body">
+                                CSS is not merely a tool for styling web elements; it's a language that embodies creativity and design principles. Through CSS, designers can manipulate colors, typography, layout, and animations to create immersive user experiences. The use of CSS preprocessors like Sass or LESS further enhances productivity by offering variables, mixins, and nested styles, streamlining the styling process.
+
+                                As web technologies evolve, CSS continues to evolve with them. CSS frameworks like Bootstrap and Tailwind CSS offer pre-designed components and utility classes, accelerating development without sacrificing customization. CSS-in-JS solutions like Styled Components bridge the gap between styling and component logic in modern JavaScript frameworks, fostering component-based development practices.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="#ac3" class="card-link" data-toggle="collapse">
+                                Exploring the Cutting-Edge: Latest Technologies in Software Engineering</a>
+                        </div>
+                        <div id="ac3" data-parent="#d1" class="collapse">
+                            <div class="card-body">
+                                AI and ML technologies are revolutionizing software engineering by enabling systems to learn from data, make predictions, and automate tasks intelligently. From recommendation engines to natural language processing, AI-powered solutions are enhancing user experiences and driving business efficiencies.
+
+                                DevOps practices, coupled with CI/CD pipelines, are streamlining software development processes, enabling faster delivery cycles, and improving collaboration between development and operations teams. Automation tools, containerization (e.g., Docker, Kubernetes), and cloud platforms facilitate seamless deployment and scalability.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="#ac4" class="card-link" data-toggle="collapse">
+                               Blockchain Technologies</a>
+                        </div>
+                        <div id="ac4" data-parent="#d1" class="collapse">
+                            <div class="card-body">
+                                Blockchain technology, known for its decentralized and secure nature, is disrupting industries beyond cryptocurrency. In software engineering, blockchain offers opportunities for building transparent, tamper-proof applications, smart contracts, and decentralized systems, ensuring data integrity and trustless transactions.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+        </div>
+    </body>
+</html>
+{%endblock%}

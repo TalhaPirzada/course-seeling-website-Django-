@@ -2,136 +2,152 @@
 {% load static %}
 {% load course_custom_tags %}
 
-{%block title%}
+{% block title %}
 Courses
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'courses/css/scrollbar.css'%}">
+<link rel="stylesheet" href="{% static 'courses/css/scrollbar.css' %}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static 'courses/css/common.css'%}">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function setId(id, element) {
+        document.getElementById('player').src = 'https://www.youtube.com/embed/' + id;
+        element.style.backgroundColor = 'red'; // Adjust color value as needed
+        event.preventDefault(); // Prevent default behavior of anchor tag
+    }
+</script>
+<style>
+    .no-preview {
+        cursor: not-allowed;
+    }
 
+    a:hover {
+        text-decoration: none;
+    }
+
+    a {
+        color: rgb(59, 60, 61);
+        
+    }
+
+    .thumbnail-image {
+        width: 100px; /* Adjust as needed */
+        height: auto;
+        margin-right: 10px; /* Adjust spacing between thumbnails */
+    }
+
+</style>
 {% endblock %}
 
 {% block js %}
 <script src="{% static 'courses/js/course_page.js' %}"></script>
 {% endblock %}
 
-{%block content%}
+{% block content %}
 
-<style>
-    .no-preview{
-        cursor: not-allowed;
-    }   
-    a:hover{
-        text-decoration: none;
-    }
-
-    a{
-        color: rgb(61, 59, 59);
-    }
-
-    .active-video-link{
-        color: rgb(206, 202, 196);
-    }
-
-    .active-video-link:hover{
-        text-decoration: none;
-        color: rgb(255, 255, 255);
-    }
-    
-</style>
 <div class="container-fluid">
     <div>
-        
         <br>
-
-        <div class="card p-3">
+        <div class="card p-3" style="border: none; ">
             <div class="row">
-                <!-- youtube player -->
-                <div class="col">
-                    <div class="mx-auto">
-                        <iframe id='player' class="mx-auto" width="100%" height="315"
-                            src="https://www.youtube.com/embed/{{video.video_id}}" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen></iframe>
+                <div id="accordion col-3">
+                    {% for week, data in weeks.items %}
+                        <div class="card">
+                            <div class="card-header" style="background-color: #f8f9fa; border-bottom: 1px solid #dee2e6;width: 300px;">
+                                <a class="card-link" data-toggle="collapse" href="#collapse{{ week }}" style="text-decoration: none; color: #212529;">
+                                    <h5 class="mb-0">Week {{ week }}</h5>
+                                </a>
+                            </div>
+                            <div id="collapse{{ week }}" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    <ul id='video_list' class="list-group overflow-y-scroll">
+                                        {% for v in data.0 %}
+                                            <a id="a{{week}}" class="lecture-link" href="#lecture{{week}}" onclick="showLecture('{{ v.video_id }}')">
+                                                <li class="list-group-item" style="border: none;height: 50px;">
+                                                    {{ v }}
+                                                </li>
+                                            </a>
+                                        {% endfor %}
+                                        <a class="btn btn-primary" href="{% url 'quiz' slug=slug week=week %}">QUIZ</a>
+                                    </ul>  
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col" id="youtubeFrame">
+                    <div class="d-flex justify-content-center">
+                        <iframe id="player" class="mx-auto shadow" style="width: 80%; border: 2px solid #ccc; border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);" src="https://www.youtube.com/embed/" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="mt-3">
+                        <div class="card shadow" style="background-color: #f8f9fa;">
+                            <div class="card-body">
+                                <h5 class="card-title" style="font-size: 24px; color: #333; font-family: 'Arial', sans-serif;">{{ course.name }}</h5>
+                                <p class="card-text" style="font-size: 16px; color: #666; font-family: 'Arial', sans-serif;">{{ course.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Prerequisite -->
+                    <div class="mt-3">
+                        <div class="card shadow" style="background-color: #f8f9fa;">
+                            <div class="card-body">
+                                <h5 class="card-title" style="font-size: 20px; color: #333; font-family: 'Arial', sans-serif;">Prerequisite</h5>
+                                <p class="card-text" style="font-size: 16px; color: #666; font-family: 'Arial', sans-serif;">
+                                    <ol>
+                                        {% for pre in course.prerequisite_set.all %}
+                                            <li>{{ pre.description }}</li>
+                                        {% endfor %}
+                                    </ol>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Learnings -->
+                    <div class="mt-3">
+                        <div class="card shadow" style="background-color: #f8f9fa;">
+                            <div class="card-body">
+                                <h5 class="card-title" style="font-size: 20px; color: #333; font-family: 'Arial', sans-serif;">Learnings</h5>
+                                <p class="card-text" style="font-size: 16px; color: #666; font-family: 'Arial', sans-serif;">
+                                    <ol>
+                                        {% for l in course.learning_set.all %}
+                                            <li>{{ l.description }}</li>
+                                        {% endfor %}
+                                    </ol>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- leacture list -->
-                <div class="col-3">
-                    <ul id='video_list' class="list-group overflow-y-scroll">
-
-                        {% is_enrolled request course as enrolled %}
-                        {% for v in videos %}
-                            <li
-                             class="list-group-item {% if v == video %} active-video {% endif %} ">
-                             <a class="
-                             
-                             {% if not enrolled and not v.is_preview %} text-muted no-preview {% endif %}
-                             {% if v == video %} active-video-link {% endif %}
-                             
-                             " href="?lecture={{v.serial_number}}">
-                                 {{v}}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- course details -->
-
-
-        <div class="mt-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{course.name}}</h5>
-                    <p class="card-text">{{course.description}}</p>
-                </div>
+                
             </div>
         </div>
-
-        <!-- Prerequite -->
-        <div class="mt-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Prerequisite</h5>
-                    <p class="card-text">
-                    <ol>
-                        {% for pre in course.prerequisite_set.all %}
-                        <li class="">{{pre.description}}</li>
-                        {% endfor %}
-                    </ol>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Learnngs -->
-        <div class="mt-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Learnings</h5>
-                    <p class="card-text">
-                    <ol>
-                        {% for l in course.learning_set.all %}
-                        <li class="">{{l.description}}</li>
-                        {% endfor %}
-                    </ol>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- learning end -->
-        <br>
-        <br>
-        <br>
-
     </div>
-
 </div>
 
-{%endblock%}
+<script>
+    function showLecture(videoId) {
+        document.getElementById('player').src = 'https://www.youtube.com/embed/' + videoId;
+        document.getElementById('youtubeFrame').style.display = 'block';
+        var quizLists = document.querySelectorAll('.quiz-list');
+        quizLists.forEach(function(quizList) {
+            quizList.style.display = 'none';
+        });
+    }
+    
+    function showQuiz(week) {
+        var quizList = document.getElementById('quiz_list' + week);
+        quizList.style.display = 'block';
+        document.getElementById('youtubeFrame').style.display = 'none';
+        document.getElementById('player').src = ''; // Clear video source
+    }
+</script>
 
+
+{% endblock %}

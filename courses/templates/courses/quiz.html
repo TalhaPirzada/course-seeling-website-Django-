@@ -1,0 +1,108 @@
+{% extends 'courses/base.html' %}
+{% load static %}
+{% load course_custom_tags %}
+
+{% block css %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Martel+Sans:wght@600&display=swap');
+
+  body {
+    font-family: 'Martel Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    font-size: 18px;
+    line-height: 1.5;
+    margin: 0 auto;
+    max-width: 1100px;
+    padding: 2rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .quiz-card {
+    margin-bottom: 1rem;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+  }
+
+  .quiz-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .quiz-options {
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
+
+  .form-check {
+    margin-bottom: 0.5rem;
+  }
+
+  .form-check-label {
+    font-weight: normal;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .total-score {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 2rem;
+  }
+  .quiz-options label{
+    margin-left:10px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mt-4 mb-3">Quiz of week {{ week }} for course {{ course }}</h2>
+  <form action="" method="post" class="quiz-form">
+    {% csrf_token %}
+    {% for quiz in quizes %}
+    <div class="card quiz-card">
+      <div class="card-body">
+        <h3 class="card-title quiz-title">{{ quiz.question }}</h3>
+        <div class="quiz-options">
+          <div class="form-check">
+            <input class="form-check-input custom-radio" type="radio" name="question{{ forloop.counter }}" id="option{{ forloop.counter }}_1" value="{{ quiz.option1 }}">
+            <label class="form-check-label" for="option{{ forloop.counter }}_1">{{ quiz.option1 }}</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input custom-radio" type="radio" name="question{{ forloop.counter }}" id="option{{ forloop.counter }}_2" value="{{ quiz.option2 }}">
+            <label class="form-check-label" for="option{{ forloop.counter }}_2">{{ quiz.option2 }}</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input custom-radio" type="radio" name="question{{ forloop.counter }}" id="option{{ forloop.counter }}_3" value="{{ quiz.option3 }}">
+            <label class="form-check-label" for="option{{ forloop.counter }}_3">{{ quiz.option3 }}</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input custom-radio" type="radio" name="question{{ forloop.counter }}" id="option{{ forloop.counter }}_4" value="{{ quiz.option4 }}">
+            <label class="form-check-label" for="option{{ forloop.counter }}_4">{{ quiz.option4 }}</label>
+          </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Submit</button>
+        </form>
+        <div class="total-score mb-4">Total Score : {{ total_score }}</div>
+    </div>
+{% endblock %}

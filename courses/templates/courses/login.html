@@ -1,23 +1,69 @@
 {% extends 'courses/base.html' %}
 {% load course_custom_tags %}
-{%block title%}
-Signup
+
+{% block title %}
+Login
 {% endblock %}
 
-{%block content%}
+{% block content %}
 
 <div class="container">
-   <h1 class="display-1">Login Page</h1>
-   <hr>
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
 
-   <div>
-      <form method="post" action="">
-         {% csrf_token %}
-         {{form.as_p}}
+  {% endfor %}
+  {% endif %}
+<div class="container" style="background-color: rgb(160, 185, 186);">
+  <form method="POST" action="">
+    {% csrf_token %}
+    <form>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Username:</label>
+        <input type="text" class="form-control" name="username" aria-describedby="emailHelp" placeholder="Enter email">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" name="password" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">Login</button>
 
-         <input type="submit" value="Login">
-      </form>
-   </div>
+    </form>
+
+  </form>
 </div>
+</div>
+<br>
+<br>
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+  Login
+</button> -->
 
-{%endblock%}
+<!-- Login Modal -->
+<!-- <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+{% endblock %}

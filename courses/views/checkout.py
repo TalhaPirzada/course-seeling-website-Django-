@@ -4,11 +4,11 @@ from django.shortcuts import HttpResponse
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from codewithvirendra.settings import *
+from courseHub.settings import *
 from time import time
 
-import razorpay
-client = razorpay.Client(auth=(KEY_ID, KEY_SECRET))
+# import razorpay
+# client = razorpay.Client(auth=(KEY_ID, KEY_SECRET))
 
 
 @login_required(login_url='/login')

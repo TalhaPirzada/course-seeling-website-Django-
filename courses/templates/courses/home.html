@@ -1,62 +1,661 @@
 {% extends 'courses/base.html' %}
+
 {% load course_custom_tags %}
 {%block title%}Courses
 {% endblock %}
 
 {%block content%}
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
+     
     .price {
         font-size: 20px;
     }
-</style>
+    .footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            position: fixed;
+            z-index: 2;
+            bottom: 0;
+            width: 100%;
+        }
+       
+        .search-form {
+            margin-bottom: 2rem;
+        }
+        .search-input {
+            width: 70%;
+            padding: 0.5rem;
+            border-radius: 5px 0 0 5px;
+            border: 1px solid #ccc;
+        }
+        .search-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 0 5px 5px 0;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #333;
+            cursor: pointer;
+        }
+        .browse-link {
+            color: #fff;
+            text-decoration: none;
+        }
+        .browse-link:hover {
+            text-decoration: underline;
+        }
+        .card {
+            margin: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            transition: font-size 0.3s ease-in-out;
+        }
+      .card-title:hover 
+      {
+    font-size: 26px;
+      }
+        .card-text {
+            font-size: 18px;
+            color: #6c757d;
+            transition: color 0.3s ease-in-out;
+        }
 
-<div class="container">
-    <br>
-    <div class="row">
-        {% for course in courses %}
-        <div class="col mx-auto">
-            <div class="card mx-auto" style="width: 18rem;">
-                <img class="card-img-top" src="{{course.thumbnail.url}}" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">{{course.name}}</h5>
-                    <p class="card-text m-0 p-0">
-                        Save {{course.discount}}%
-                        <br>
-                        <span class="price">
-                            <del>{{course.price|rupee}}</del>
-                            &nbsp;
+        .btn {
+            border-radius: 10px;
+            background-color: #333;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .btn:hover  {
+            background-color: cadetblue;
+            color: #fff;
+        }
+      
+        .card-img-top {
+            object-fit: contain;
+            height: 200px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .card-img-top:hover {
+            transform: scale(1.1);
+        }
+        .course-description {
+            height: 0;
+            overflow: hidden;
+            transition: height 0.5s ease-in-out;
+        }
+        .card:hover .course-description {
+            height: 100px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+   
+      
+        .carousel-item {
+    height: 70vh; 
+}
 
-                            <span>{% cal_sellprice course.price course.discount as value %} {{value|rupee}}</span>
-                        </span>
+.carousel-item img {
+    width: auto; 
+    height: 100%; 
+    object-fit: cover; 
+}
 
-                    </p>
+        .carousel-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    text-align: center;
+    width: 100%;
+}
+.carousel-control-prev, .carousel-control-next {
+        color: black;
+        width: 50px; /* Set the width of the carousel controls */
+    height: 50px;
+        z-index:10;
+        top:30% 
+    }
+    .carousel-control-prev {
+    left: -4%; 
+    z-index: 100;
+}
+
+.carousel-control-next {
+    right: -4%;
+
+    z-index: 100;
+}
+@keyframes scroll {
+    0%
+    {
+        transform: translateX(0);
+    }
+    100% 
+    {
+        transform: translateX(-100%);
+    }
+    
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: black;
+    color:black;
+    width: 20px;
+    height: 20px;
+    /* Set the background color of the carousel controls */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    color: black; /* Set the color of the carousel controls */
+}
+.carouselTwo .carousel-item {
+    height: 100%;
+}
+.static-content {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            text-align: center;
+            width: 100%;
+            z-index: 1000; 
+        }
+
+        @media (max-width: 768px) {
+            .static-content {
+                top: 50%;
+            }
+        }
+        @media (max-width: 565) {
+            .static-content {
+                top: 50%;
+            }
+         
+        }
+        @media (max-width: 300px) {
+            .static-content {
+                top: 35%;
+            }
+        }
+    
+
+    .form-check-input:hover~.form-check-label {
+        font-weight: bold;
+    }
+  
+     .dropdown-menu {
+        width: 350px; 
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.9); 
+    }
+    
+    .dropdown-menu .form-check {
+        display: flex;
+        align-items: center;
+    }
+
+    .dropdown-menu .form-check-input {
+        margin-right: 10px; /* Adjust spacing between radio button and label */
+    }
+
+    #uniqueSlider .slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    /* margin-top: 20px;  */
+}
+
+#uniqueSlider .slide-track {
+    display: flex;
+    justify-content: center; /* Center the slides horizontally */
+    width: 1200px; /* Set a fixed width for the slide track */
+    animation: scroll2 15s linear infinite; /* Adjust the animation duration */
+}
+
+#uniqueSlider .slide {
+    flex: 0 0 auto;
+    width: 33.33%; /* Adjust the width of the slides to fit within the slide track */
+    max-width: 20%; /* Set maximum width for the slides */
+    height: 200px; /* Set a fixed height for the slides */
+    z-index: 10;
+    margin: 0 2px; 
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Ensure images maintain aspect ratio */
+#uniqueSlider .slide img {
+    width: 40%;
+    height: 50%;
+    object-fit: cover; /* Ensure the entire image is visible, even if it's cropped */
+    border-radius: 50%;
+}
+
+@keyframes scroll2 {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-200%)); /* Adjust to move all slides out of view */
+    }
+}
+
+
+
+   #design  
+   {
+    margin: 70px auto;
+    text-align: center;
+    font-size: 40px;
+    max-width: 100%;
+    position: relative;
+   }
+   #design::before 
+   {
+    content: "";
+    display: block;
+    width: 35%;
+    height: 2px;
+    background: cadetblue;
+    position: absolute;
+    left:0;
+    top:50%;
+    z-index:1;
+
+   }
+   #design::after
+   {
+    content: "";
+    display: block;
+    width: 35%;
+    height: 2px;
+    background: cadetblue;
+    position: absolute;
+    right:0;
+    top:50%;
+    z-index:1;
+    
+   }
+   #design span 
+   {
+    background: white;
+    z-index: 2;
+   }
+   
+@media (max-width: 1000px) {
+    #design::before,
+    #design::after {
+        width: 30%; /* Adjust width for smaller screens */
+    }
+}
+@media (max-width: 735px) {
+    #design::before,
+    #design::after {
+        width: 20%; /* Adjust width for smaller screens */
+    }
+}
+@media (max-width: 500px) {
+    #design::before,
+    #design::after {
+        width: 10%; /* Adjust width for smaller screens */
+    }
+}
+   hr 
+   {
+   
+    border: none;
+    height: 1px;
+    background-color: cadetblue;
+   }
+  .reviews .card {
+    margin-bottom: 20px;
+    border-radius: 15px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 300px; /* Adjust the width of the card */
+}
+
+.reviews .card-content {
+    padding: 20px;
+}
+
+.reviews .image img {
+    max-width: 100%;
+    border-radius: 100%;
+    height: auto;
+}
+
+.reviews .image {
+    margin-bottom: 15px;
+}
+
+.reviews .profile-name {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.reviews .profile-description {
+    font-size: 16px;
+    color: #6c757d;
+}
+
+</style></head>
+<body>
+    <div class="static-content" style="color: black !important;">
+        <h2> Fuel Your Ambition </h2>
+        <p> Search our 4,000+ courses from leading universities and institutions </p>
+        <div class="search-form d-flex justify-content-center align-items-center">
+            <form method="GET" action="{% url 'search' %}" class="form-inline">
+                <div class="form-group ">
+                    {{ form.query | add_class:"form-control custom-width" }} 
                 </div>
-
-                <div class="card-footer p-0">
-                    {% is_enrolled request course as enrolled %}
-
-
-                    <div class="row no-gutters">
-                        {% if enrolled %}
-                        <div class="col border-right">
-                            <a href="/course/{{course.slug}}" class="btn btn-light btn-block">Start Course</a>
-                        </div>
-                        {% else %}
-                        <div class="col border-right">
-                            <a href="/check-out/{{course.slug}}" class="btn btn-light btn-block">Enroll Now</a>
-                        </div>
-                        <div class="col">
-                            <a href="/course/{{course.slug}}" class="btn btn-light  btn-block">Show More</a>
-                        </div>
-                        {% endif %}
-                    </div>
-
-                </div>
+                <button class="search-btn" type="submit">Search</button>
+            </form>
+        </div>
+        
+        <a href="#browseAllCourses" class="btn browse-link">Browse All Courses</a>
+    </div>
+ 
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner" style="max-width: 97%; margin: 0 auto;">
+            <div class="carousel-item active">
+                <img class="d-block w-100 rounded" src="https://static.vecteezy.com/system/resources/previews/001/937/625/non_2x/online-education-application-learning-worldwide-on-phone-mobile-website-background-social-distance-concept-the-classroom-training-course-library-illustration-flat-design-vector.jpg" alt="First slide">
+           
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100 rounded" src="https://leverageedu.com/blog/wp-content/uploads/2020/03/Online-Learning.jpg" alt="Second slide">
+               
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100 rounded " src="https://static.vecteezy.com/system/resources/previews/001/925/918/original/e-learning-concept-free-vector.jpg" alt="Third slide">
+             
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100 rounded" src="https://static.vecteezy.com/system/resources/previews/001/879/420/non_2x/illustration-of-e-learning-makes-it-easy-for-student-to-learn-distance-learning-with-laptop-and-internet-online-home-work-courses-and-study-for-open-knowledge-stationery-and-stack-of-book-free-vector.jpg" alt="Third slide">
+             
             </div>
         </div>
-        {% endfor %}
+    </div>
+
+    
+    
+    <a id="browseAllCourses"></a>
+    <div  class="container" style="max-width: 97%; border-radius: 10px; background-color: white;margin-top: 20px;">
+        <hr>
+        <h1 class="text-center mt-5 mb-4 text-dark title" style="display: inline-block; margin-left: 30%;">Discover Our Courses</h1> 
+<div class="dropdown" style="display: inline-block; margin-left: 20%;">
+    <button style="display: flex; justify-content: flex-end;"  class="btn text-light ml-7 dropdown-toggle" type="button" id="sortingDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Sort Courses
+    </button>
+    <div class="dropdown-menu" aria-labelledby="sortingDropdown">
+        <form method="GET" action="{% url 'filter' %}">
+            {% csrf_token %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sort_by" id="name_asc" value="name_asc">
+                <label class="form-check-label" for="name_asc">Name (A-Z)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sort_by" id="name_desc" value="name_desc">
+                <label class="form-check-label" for="name_desc">Name (Z-A)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sort_by" id="price_asc" value="price_asc">
+                <label class="form-check-label" for="price_asc">Price (Low-High)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sort_by" id="price_desc" value="price_desc">
+                <label class="form-check-label" for="price_desc">Price (High-Low)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sort_by" id="date_asc" value="date_asc">
+                <label class="form-check-label" for="date_asc">Date (Oldest-Latest)</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sort_by" id="date_desc" value="date_desc">
+                <label class="form-check-label" for="date_desc">Date (Latest-Oldest)</label>
+            </div>
+            <button type="submit" class="btn text-light">Apply Sorting</button>
+        </form>
     </div>
 </div>
 
-{%endblock%}
+</form>
+       
+     
+    
+<div id="carouselExampleIndicators1" class="carouselTwo carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        {% for course in courses %}
+        {% if forloop.counter0|divisibleby:3 %} {# Start a new carousel item for every third course #}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="row">
+                {% endif %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top" src="{{ course.thumbnail.url }}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ course.name }}</h5>
+                            <p class="card-text">
+                                Save {{ course.discount }}%
+                                <br>
+                                <span class="price">
+                                    <del>{{ course.price|rupee }}</del>
+                                    &nbsp;
+                                    <span style="color: #3f51b5;">{% cal_sellprice course.price course.discount as value %} {{ value|rupee }}</span>
+                                </span>
+                            </p>
+                            <div class="course-description">
+                                {{ course.description }}
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="/course/{{ course.slug }}" class="btn btn-primary btn-block">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.last or forloop.counter|divisibleby:3 %} {# Close the carousel item for the last course or every third course #}
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators1" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators1" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<h1 id="design">
+    <span>Courses Taught </span>
+</h1>
+<div class="slider" id="uniqueSlider" style="overflow-x: hidden;">
+    <div class="slide-track">
+       
+        <div class="slide">
+       <img src="https://tse1.mm.bing.net/th?id=OIP.DnPd5yHeKsm1H63J9w2VSQHaHa&pid=Api&P=0&h=180">
+     
+        </div>
+        <div class="slide">
+         
+            <img src="https://1000logos.net/wp-content/uploads/2020/09/JavaScript-Logo-2048x1280.png">
+                 </div>
+                 <div class="slide">
+
+                    <img src="https://i0.wp.com/webvars.com/wp-content/uploads/2017/05/5803378710_7ed56c893e_o.jpg?resize=1920%2C1200">
+                         </div>
+                         <div class="slide">
+
+                            <img src="https://tse4.mm.bing.net/th?id=OIP.-Ce4wp7GDUmdoy-ytu8ONQAAAA&pid=Api&P=0&h=180">
+                                 </div>
+                                 <div class="slide">
+
+                                    <img src="https://tse1.explicit.bing.net/th?id=OIP.1dN606yUlJbUKj15CPrV3QHaF9&pid=Api&P=0&h=180">
+                                         </div>
+                                         <div class="slide">
+
+                                            <img src="https://tse1.mm.bing.net/th?id=OIP.WiWEq7sG_XRHZZT9zsTGRQHaEK&pid=Api&P=0&h=180">
+                                                 </div>
+        <div class="slide">
+         
+       <img src="https://tse3.mm.bing.net/th?id=OIP.bkbn2-K7c9rMBV5dvYXDrQHaIh&pid=Api&P=0&h=180">
+            </div>
+            <div class="slide">
+         
+                <img src="https://1000logos.net/wp-content/uploads/2020/09/JavaScript-Logo-2048x1280.png">
+                     </div>
+            <div class="slide">
+         
+                <img src="https://tse3.mm.bing.net/th?id=OIP.lZHtgsqo0gww25bLcpjTqQHaHZ&pid=Api&P=0&h=180">
+                     </div>
+                     <div class="slide">
+         
+                        <img src="https://cdn.jsdelivr.net/npm/@programming-languages-logos/csharp@0.0.0/csharp_256x256.png">
+                             </div>
+                             <div class="slide">
+
+                                <img src="https://tse4.mm.bing.net/th?id=OIP.-Ce4wp7GDUmdoy-ytu8ONQAAAA&pid=Api&P=0&h=180">
+                                     </div>
+                             <div class="slide">
+         
+                                <img src="https://tse2.mm.bing.net/th?id=OIP.b4_YyiXHoNDYse-ky1OL_QHaHa&pid=Api&P=0&h=180">
+                                     </div>
+                                    
+        </div>
+        
+        </div>
+        <h1 id="design">
+            <span>Student Reviews </span>
+        </h1>
+        <section>
+            <div class="container reviews" style="margin-top:2%;">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card" style="background-color: beige;">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://tse3.mm.bing.net/th?id=OIP.DpVKdOVlNvzP-Hz24hqJXAHaIu&pid=Api&P=0&h=180">
+                                </div>
+                                <div class="profile-name">Skylar White<br>
+                                java Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad, consequatur.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="background-color: rgb(227, 198, 202);">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://tse3.mm.bing.net/th?id=OIP.hXZi-2Lc_OPdbDXIR_MSNQHaHa&pid=Api&P=0&h=180">
+                                </div>
+                                <div class="profile-name">Walter Black<br>
+                                java Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad, consequatur.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="background-color: #E5FAE9;">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://tse2.mm.bing.net/th?id=OIP.jlpYd9M0n0-CA_OiVIoTAQHaHa&pid=Api&P=0&h=180">
+                                </div>
+                                <div class="profile-name">Gwen Stacy<br>
+                                java Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad, consequatur.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card" style="background-color: #EFEFF7;">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://tse2.mm.bing.net/th?id=OIP.zp-OoRgWS7L2cMttsgxRqQHaHa&pid=Api&P=0&h=180">
+                                </div>
+                                <div class="profile-name"> Angelina Jolie<br>
+                                java Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad, consequatur.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="background-color: #F68C1F;">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://tse4.mm.bing.net/th?id=OIP.l0brqMrdiKjD2t5Ab4ZkCAHaHa&pid=Api&P=0&h=180">
+                                </div>
+                                <div class="profile-name">Rick Grimmes<br>
+                                java Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad, consequatur.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="background-color: #DCF7FE;">
+                            <div class="card-content">
+                                <div class="image">
+                                    <img src="https://tse3.mm.bing.net/th?id=OIP.79yiePEuSgGPAI4Cy-NP2QAAAA&pid=Api&P=0&h=180">
+                                </div>
+                                <div class="profile-name">Mitchell Wood<br>
+                                java Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad, consequatur.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+ 
+        </div>
+      
+        </script>
+    <script>
+        document.getElementById('filterButton').addEventListener('click', function() {
+            var filterOptions = document.getElementById('filterOptions');
+            if (filterOptions.style.display === 'none') {
+                filterOptions.style.display = 'block';
+            } else {
+                filterOptions.style.display = 'none';
+            }
+        });
+    </script>
+    {% endblock %}
+</body>
+</html>
+

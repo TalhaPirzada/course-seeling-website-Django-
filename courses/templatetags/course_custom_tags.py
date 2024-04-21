@@ -35,3 +35,6 @@ def is_enrolled(request , course):
     except:
         return False
 
+@register.filter
+def add_class(field, css_class):
+    return field.as_widget(attrs={'class': css_class})

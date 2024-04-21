@@ -1,5 +1,5 @@
 from django.contrib import admin
-from courses.models import Course , Payment , UserCourse , Tag , Prerequisite , Learning , Video
+from courses.models import Course , Payment , UserCourse , Tag , Prerequisite , Learning , Video , Quiz
 from django.utils.html import format_html
 # Register your models here.
 
@@ -15,9 +15,11 @@ class LearningAdmin(admin.TabularInline):
 class PrerequisiteAdmin(admin.TabularInline):
     model = Prerequisite
 
+class QuizAdmin(admin.TabularInline):
+    model = Quiz
 
 class CourseAdmin(admin.ModelAdmin):
-    inlines = [TagAdmin , LearningAdmin , PrerequisiteAdmin , VideoAdmin]
+    inlines = [TagAdmin , LearningAdmin , PrerequisiteAdmin , VideoAdmin , QuizAdmin]
     list_display = ["name" , 'get_price' , 'get_discount' , 'active']
     list_filter = ("discount" , 'active')
 
@@ -68,3 +70,4 @@ admin.site.register(Course , CourseAdmin)
 admin.site.register(Video)
 admin.site.register(Payment , PaymentAdmin)
 admin.site.register(UserCourse , UserCourseAdminModel)
+admin.site.register(Quiz)
